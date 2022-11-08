@@ -5,6 +5,11 @@ class Router{
   private $_uri = array();
   private $_action = array();
 
+  // private $oRequest = null;
+  public function __construct( $oRequest = null ){
+    // $this->oRequest = $oRequest;
+  }
+
   /**
    * Agregar Ruta
    * @param $uri    Url Ruta sin base URL
@@ -21,7 +26,8 @@ class Router{
    * Iniciar libreria
   */
   public function run(){
-    $uriGet = isset($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+    // $uriGet = isset($_GET['uri']) ? '/' . $_GET['uri'] : '/';
+    $uriGet = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
     foreach( $this->_uri as $key => $value ){
       if( preg_match("#^$value$#", $uriGet) ){
         $action = $this->_action[$key];
@@ -35,7 +41,7 @@ class Router{
   */
   private function runAction($action){
     if( $action instanceof \Closure ){
-      $action();
+      $action( $this->oRequest );
     }else{
       $params = explode('@', $action);
       $obj = new $params[0];

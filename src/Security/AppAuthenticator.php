@@ -10,7 +10,7 @@ class AppAuthenticator{
   }
 
   public function authenticate(){
-
+    
   }
 
 }

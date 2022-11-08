@@ -4,6 +4,9 @@
 require_once __DIR__."/../config/routing.php";
 // --- Controladores
 require_once __DIR__."/../src/Controller/LoginController.php";
+require_once __DIR__."/../src/Controller/UsersController.php";
+// --- Security
+require_once __DIR__."/../src/Security/AppAuthenticator.php";
 
 // --- --- --- Variables --- --- ---
 $GLOBALS["app"] = (object)[
@@ -12,21 +15,25 @@ $GLOBALS["app"] = (object)[
   "html" => array(),
   "block" => array()
 ];
-// $GLOBALS["base_url"] = "";
 // --- --- END Variables --- --- ---
 
-
 // --- --- --- Rutas --- --- ---
-$oRouter = new Router();
+
+// var_dump( $_SERVER );exit();
+
+$oRouter = new Router( $_REQUEST );
+// --- Security
+$oRouter->add('/users',       'AppAuthenticator@authenticate');
+// --- Usuarios
+$oRouter->add('/users',       'UsersController@index');
+$oRouter->add('/users-json',  'UsersController@indexJson');
 // --- Login
-$oRouter->add('/', 'LoginController@Index');
-$oRouter->add('/login', 'LoginController@Index');
-// --- Vehiculos
-// $oRouter->add('/vehiculos',  'HomeController@Index');
+$oRouter->add('/',      'LoginController@index');
+$oRouter->add('/login', 'LoginController@index');
+
 $oRouter->run();
 // --- --- END Rutas --- --- ---
 
-// --- --- --- Rutas --- --- ---
 
 $sFilePath = __DIR__."/../templates/base.php";
 ob_start();
@@ -34,9 +41,6 @@ include($sFilePath);
 $oTemplate = ob_get_contents();
 ob_end_clean();
 echo $oTemplate;
-// unset($oTemplate);
-
-// echo __DIR__."/../templates/base.php";
-// --- --- END Rutas --- --- ---
+unset($oTemplate);
 
 ?>

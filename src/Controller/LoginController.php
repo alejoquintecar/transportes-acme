@@ -15,11 +15,13 @@ class LoginController extends BaseController{
   /** Render template
    * @author <Nestor Alejandro Quintero Cardozo>
   */
-  //LoginController@Index
-  public function Index(){
-    
-    $this->render("app/login.php", array(
-      "prueba" => "01"
+  //LoginController@index
+  public function index(){
+
+    // header('Location: '.'/users');
+
+    $this->render('app/login.html.php', array(
+      'prueba' => '01'
     ));
   }
 
